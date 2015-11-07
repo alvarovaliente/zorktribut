@@ -16,13 +16,14 @@ private:
 	Room *west;
 	Room *east;
 	int door; //depending on the number the door can be in different states 0= open, 1= close (have to open it), 2= have to force it
+	bool doorOpen;
 	int walls[4];
 
 
 public:
 
 	//Constructor
-	Room(string name, string description, bool isInside, int d);
+	Room(string name, string description, bool isInside, int d, bool dopen);
 
 	//Methods
 	string const getName();
@@ -45,6 +46,9 @@ public:
 
 	int const getDoor();
 	void setDoor(int);
+
+	bool const getDoorOpen();
+	void setDoorOpen(bool);
 
 	int * const getWalls();
 	void setWalls(int *);

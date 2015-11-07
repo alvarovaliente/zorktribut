@@ -3,12 +3,13 @@
 
 using namespace std;
 
-Room::Room(string nm, string des, bool isInside, int d)
+Room::Room(string nm, string des, bool isInside, int d, bool dopen)
 {
 	name = nm;
 	description = des;
 	isPLayerInside = isInside;
 	door = d;
+	doorOpen = dopen;
 }
 
 string const Room::getName()
@@ -79,6 +80,16 @@ int const Room::getDoor()
 void Room::setDoor(int d)
 {
 	door = d;
+}
+
+bool const Room::getDoorOpen()
+{
+	return doorOpen;
+}
+
+void Room::setDoorOpen(bool d)
+{
+	doorOpen = d;
 }
 
 int * const Room::getWalls()

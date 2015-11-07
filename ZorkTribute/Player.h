@@ -41,6 +41,9 @@ public:
 
 	void const itsWall();
 
+	void openDoor(Room &ar, string dir);
+	void closeDoor(Room &ar, string dir);
+
 	~Player();
 
 };

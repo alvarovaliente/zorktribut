@@ -12,15 +12,16 @@ using namespace std;
 
 int main()
 {
-	Room *room1 = new Room("Living room", "It's a nice living room with a futuristic forniture", false, 0);
-	Room *room2 = new Room("Bed room", "A fucking awesome room with a nice bed to fuck", false, 0);
-	Room *wall = new Room("Wall", "You can't pass! It's a wall", false, 0);
+	Room *room1 = new Room("Living room", "It's a nice living room with a futuristic forniture \n\n Seems to be a door in the north ", false, 0, true);
+	Room *room2 = new Room("Bed room", "A fucking awesome room with a nice bed to fuck \n \n Seems to be a door in the south", false, 1, false);
+	Room *wall = new Room("Wall", "You can't pass! It's a wall", false, 0, true);
 
 	Player *player = new Player("Player1", 0, 0, *room1);
 
 	bool exitGame = false;
 	string order1;
 	string order2;
+	string orderDirection;
 	
 
 	room1->createExits(*room2,*wall, *wall,*wall,0,1,1,1);
@@ -54,9 +55,33 @@ int main()
 			}
 		}
 
-		if (order1 == "look")
+		if (order1 == "open")
+		{
+			if (order2 == "door")
+			{
+				cout << "\n Specify a direction to open the door!: ";
+				cin >> orderDirection;
+				player->openDoor(*player->getActualRoom(),orderDirection);
+			}
+		}
+
+		if (order1 == "close")
+		{
+			if (order2 == "door")
+			{
+				cout << "\n Specify a direction to close the door!: ";
+				cin >> orderDirection;
+				player->closeDoor(*player->getActualRoom(), orderDirection);
+			}
+		}
+
+		if (order1 == "look" && order2 == "around")
 		{
 			player->lookAround(*player->getActualRoom());
+		}
+		else
+		{
+			cout << "\n What should I look?! \n";
 		}
 
 		if (order1 == "exit")
