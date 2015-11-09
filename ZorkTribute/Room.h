@@ -1,6 +1,9 @@
 #pragma once
 #include "stdafx.h"
 #include <string>
+#include "Object.h"
+#include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -18,6 +21,8 @@ private:
 	int door; //depending on the number the door can be in different states 0= open, 1= close (have to open it), 2= have to force it
 	bool doorOpen;
 	int walls[4];
+	vector <Object> objectsInRoom;
+	
 
 
 public:
@@ -52,6 +57,12 @@ public:
 
 	int * const getWalls();
 	void setWalls(int *);
+
+	vector <Object> const getObjectsInRoom();
+	void setObjectsInRoom(vector <Object> &o);
+
+	void const listObjectsInRoom();
+	void removeObjectInRoomByName(string n); 
 
 	void createExits(Room &north, Room &south, Room &east, Room &west, int n, int s, int e, int w);
 

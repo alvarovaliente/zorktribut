@@ -3,6 +3,7 @@
 #include "Room.h"
 #include <iostream>
 #include <string>
+#include "Inventory.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ private:
 	int score;
 	int moves;
 	Room *actualRoom;
+	Inventory *playerInventory;
 
 	
 public:
@@ -38,6 +40,10 @@ public:
 	void goWest(Room &);
 
 	void const lookAround(Room &ar);
+	void const lookInventory();
+
+	void pickObject(string n); //TODO
+	void dropObject(string n); //TODO
 
 	void const itsWall();
 

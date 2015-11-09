@@ -97,6 +97,51 @@ int * const Room::getWalls()
 	return walls;
 }
 
+vector <Object> const Room::getObjectsInRoom()
+{
+	return objectsInRoom;
+}
+
+void Room::setObjectsInRoom(vector <Object> &o)
+{
+	objectsInRoom = o;
+}
+
+void const Room::listObjectsInRoom()
+{
+	vector <Object> objects = getObjectsInRoom();
+
+	vector <Object>::iterator it = objects.begin();
+
+	for (it; it != objects.end(); it++)
+	{
+		cout << "\n";
+		cout << it->getName();
+		cout << ": ";
+		cout << it->getDescription();
+		cout << "\n";
+	}
+}
+
+void Room::removeObjectInRoomByName(string n)
+{
+	vector <Object> objectsAux = getObjectsInRoom();
+
+	vector <Object>::iterator it = objectsAux.begin();
+
+	for (it; it != objectsAux.end(); it++)
+	{
+		if (it->getName() == n)
+		{
+			objectsAux.erase(it);
+			break;
+		}
+	}
+
+	this->setObjectsInRoom(objectsAux);
+}
+
+
 void Room::createExits(Room &n, Room &s, Room &e, Room &w, int nor, int sou, int ea, int we)
 {
 	north = &n;

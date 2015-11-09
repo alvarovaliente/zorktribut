@@ -138,6 +138,9 @@ void const Player::lookAround(Room &ar)
 {
 	cout << "\n You are in the " << this->getActualRoom()->getName() << "\n";
 	cout << "\n" << this->getActualRoom()->getDescription() << "\n";
+	cout << "\n\n";
+
+	this->getActualRoom()->listObjectsInRoom();
 }
 
 void const Player::itsWall()
