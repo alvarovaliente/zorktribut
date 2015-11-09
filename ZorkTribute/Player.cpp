@@ -11,6 +11,7 @@ Player::Player(string n, int s, int m, Room &ac)
 	score = s;
 	moves = m;
 	actualRoom = &ac;
+	playerInventory = new Inventory();
 }
 
 string const Player::getName()
@@ -141,6 +142,67 @@ void const Player::lookAround(Room &ar)
 	cout << "\n\n";
 
 	this->getActualRoom()->listObjectsInRoom();
+}
+
+void Player::pickObject(string n)
+{
+	vector <Object> objectsInRoomAux = this->actualRoom->getObjectsInRoom();
+
+	vector <Object>::iterator it = objectsInRoomAux.begin();
+
+	for (it; it != objectsInRoomAux.end(); it++)
+	{
+		if (it->getName() == n)
+		{
+			playerInventory->addObjectToInventory(*it);
+			actualRoom->removeObjectInRoomByName(n);
+
+			cout << "\n" << n << " picked!! \n";
+			
+			break;
+		}
+	}
+
+	if (it == objectsInRoomAux.end()) {
+		cout << "\n I don't see any object like this in this room!! \n";
+	}
+	
+}
+
+void Player::dropObject(string n)
+{
+	vector <Object> objectsInRoomAux = actualRoom->getObjectsInRoom();
+
+	vector <Object> objectsInventary = playerInventory->getObjectsIn();
+
+	vector <Object>::iterator it = objectsInventary.begin();
+
+	int flag = 0;
+
+	for (it; it != objectsInventary.end(); it++)
+	{
+		if (it->getName() == n)
+		{
+			objectsInRoomAux.push_back(*it);
+			objectsInventary.erase(it);
+
+			actualRoom->setObjectsInRoom(objectsInRoomAux);
+			this->playerInventory->setObjectsIn(objectsInventary);
+
+			cout << "\n" << n << " droped!! \n";
+			flag = 1;
+			break;
+		}
+	}
+
+	if (!flag) {
+		cout << "\n I don't see any object like this in the inventary!! \n";
+	}
+}
+
+Inventory const  Player::getInventory()
+{
+	return *playerInventory;
 }
 
 void const Player::itsWall()

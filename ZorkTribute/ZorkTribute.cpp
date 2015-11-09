@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <iterator>
 #include <vector>
+#include "Inventory.h"
 
 
 using namespace std;
@@ -29,8 +30,8 @@ int main()
 	Room *wall = new Room("Wall", "You can't pass! It's a wall", false, 0, true);
 
 	vector <Object> objectsRoom2;
-	Object *key = new Object("Key", "A key for open some doors.");
-	Object *waterBottle = new Object("Water Bottle", "A glass bottle full of water");
+	Object *key = new Object("key", "A key for open some doors.");
+	Object *waterBottle = new Object("water bottle", "A glass bottle full of water");
 
 	objectsRoom2.push_back(*key);
 	objectsRoom2.push_back(*waterBottle);
@@ -144,6 +145,35 @@ int main()
 			{
 				cout << "\n What should I look?! \n";
 			}
+		}
+		//Pick order
+		else if (suborders[0] == "pick")
+		{
+			if (suborders.size() > 1)
+			{
+				player->pickObject(suborders[1]);
+			}
+			else
+			{
+				cout << "\n What should I pick?! \n";
+			}
+		}//Drop order
+		else if (suborders[0] == "drop")
+		{
+			if (suborders.size() > 1)
+			{
+				player->dropObject(suborders[1]);
+			}
+			else
+			{
+				cout << "\n What should I pick?! \n";
+			}
+		}//Inventory order
+		else if (suborders[0] == "inventory")
+		{
+			Inventory inventoryAux = player->getInventory();
+			
+			inventoryAux.checkInventary();
 		}
 		//Exit game order
 		else if (suborders[0] == "exit")

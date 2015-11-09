@@ -42,8 +42,10 @@ public:
 	void const lookAround(Room &ar);
 	void const lookInventory();
 
-	void pickObject(string n); //TODO
-	void dropObject(string n); //TODO
+	void pickObject(string n);
+	void dropObject(string n); 
+
+	Inventory  const getInventory();
 
 	void const itsWall();
 
