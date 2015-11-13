@@ -45,6 +45,8 @@ public:
 	void pickObject(string n);
 	void dropObject(string n); 
 
+	void useObject(string n);
+
 	Inventory  const getInventory();
 
 	void const itsWall();

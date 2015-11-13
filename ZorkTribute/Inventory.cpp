@@ -52,7 +52,7 @@ void const Inventory::checkInventory()
 
 	vector <Object>::iterator it = objectsInAux.begin();
 
-	if (objectsInAux.size > 0)
+	if (objectsInAux.size() > 0)
 	{
 		cout << "\nInventory list:\n";
 

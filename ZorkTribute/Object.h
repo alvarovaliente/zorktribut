@@ -21,4 +21,6 @@ public:
 	string const getDescription();
 	void setDescription(string d);
 
+	//~Object();
+
 };

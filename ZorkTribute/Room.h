@@ -18,7 +18,7 @@ private:
 	Room *south;
 	Room *west;
 	Room *east;
-	int door; //depending on the number the door can be in different states 0= open, 1= close (have to open it), 2= have to force it
+	int door; //the room has a door to enter and depending on the number the door can be in different states 0= open, 1= close (have to open it), 2= need a key
 	bool doorOpen;
 	int walls[4];
 	vector <Object> objectsInRoom;

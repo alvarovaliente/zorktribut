@@ -111,15 +111,19 @@ void const Room::listObjectsInRoom()
 {
 	vector <Object> objects = getObjectsInRoom();
 
-	vector <Object>::iterator it = objects.begin();
-
-	for (it; it != objects.end(); it++)
+	if (objects.size() > 0)
 	{
-		cout << "\n";
-		cout << it->getName();
-		cout << ": ";
-		cout << it->getDescription();
-		cout << "\n";
+		vector <Object>::iterator it = objects.begin();
+		cout << "List of objects in this room: \n";
+
+		for (it; it != objects.end(); it++)
+		{
+			cout << "\n";
+			cout << "\t - ";
+			cout << it->getName();
+			cout << ": ";
+			cout << it->getDescription();
+		}
 	}
 }
 
@@ -149,6 +153,7 @@ void Room::createExits(Room &n, Room &s, Room &e, Room &w, int nor, int sou, int
 	west = &w;
 	east = &e;
 
+	//0 = wall, 1 = room, 2 = door, 3 = key door
 	walls[0] = nor;
 	walls[1] = sou;
 	walls[2] = ea;

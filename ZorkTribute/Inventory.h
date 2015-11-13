@@ -14,8 +14,6 @@ private:
 
 public:
 
-
-
 	vector <Object> const getObjectsIn();
 	void setObjectsIn(vector <Object> oi);
 

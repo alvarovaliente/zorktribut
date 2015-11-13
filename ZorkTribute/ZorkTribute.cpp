@@ -25,8 +25,9 @@ int main()
 	string item;
 	vector <string>  suborders;
 
-	Room *room1 = new Room("Living room", "It's a nice living room with a futuristic forniture \n\n Seems to be a door in the north ", false, 0, true);
-	Room *room2 = new Room("Bed room", "A fucking awesome room with a nice bed to fuck \n \n Seems to be a door in the south", false, 1, false);
+	Room *room1 = new Room("Living room", "It's a nice living room with a futuristic forniture \n\t - Seems to be a door in the north and other one in the east", false, 0, true);
+	Room *room2 = new Room("Bed room", "A fucking awesome room with a nice bed to fuck \n \t - Seems to be a door in the south", false, 1, false);
+	Room *room3 = new Room("Bath room", "A Bath room with a nice shower! \n \t - Seems to be a door in the west", false, 2, false);
 	Room *wall = new Room("Wall", "You can't pass! It's a wall", false, 0, true);
 
 	vector <Object> objectsRoom2;
@@ -47,12 +48,13 @@ int main()
 	string orderDirection;
 	
 
-	room1->createExits(*room2,*wall, *wall,*wall,0,1,1,1);
+	room1->createExits(*room2,*wall, *room3,*wall,0,1,0,1);
 	room2->createExits(*wall,*room1,*wall,*wall,1,0,1,1);
+	room3->createExits(*wall, *wall, *wall, *room1, 0, 0, 0, 1);
 
 	while (!exitGame)
 	{
-		cout << "\n Enter your order:";
+		cout << "\n\n MOVES: " << player->getMoves() << "\t SCORE: " << player->getScore() << " ->";
 
 		getline(cin, order);
 
@@ -61,6 +63,9 @@ int main()
 
 		while (iss >> item)
 			suborders.push_back(item);
+
+		int nMovesAux = player->getMoves();
+		player->setMoves(++nMovesAux);
 
 
 		//Go order
@@ -119,11 +124,16 @@ int main()
 		{
 			if (suborders.size() > 1)
 			{
-				if (suborders[1] == "door")
+				if (suborders[1] == "door" && suborders.size() >2)
 				{
-					cout << "\n Specify a direction to close the door!: ";
-					cin >> orderDirection;
-					player->closeDoor(*player->getActualRoom(), orderDirection);
+					if (suborders.size() > 2)
+					{
+						player->closeDoor(*player->getActualRoom(), suborders[2]);
+					}
+					else
+					{
+						cout << "\n Specify a direction to close the door!: ";
+					}			
 				}
 			}
 			else
@@ -157,7 +167,8 @@ int main()
 			{
 				cout << "\n What should I pick?! \n";
 			}
-		}//Drop order
+		}
+		//Drop order
 		else if (suborders[0] == "drop")
 		{
 			if (suborders.size() > 1)
@@ -168,12 +179,25 @@ int main()
 			{
 				cout << "\n What should I pick?! \n";
 			}
-		}//Inventory order
+		}
+		//Use order
+		else if (suborders[0] == "use")
+		{
+			if (suborders.size() == 2)
+			{
+				player->useObject(suborders[1]);
+			}
+			else
+			{
+				cout << "\n What should I use?! \n";
+			}
+		}
+		//Inventory order
 		else if (suborders[0] == "inventory")
 		{
 			Inventory inventoryAux = player->getInventory();
 			
-			inventoryAux.checkInventary();
+			inventoryAux.checkInventory();
 		}
 		//Exit game order
 		else if (suborders[0] == "exit")
