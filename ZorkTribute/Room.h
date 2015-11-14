@@ -4,6 +4,7 @@
 #include "Object.h"
 #include <vector>
 #include <iostream>
+#include "Enemy.h"
 
 using namespace std;
 
@@ -22,6 +23,8 @@ private:
 	bool doorOpen;
 	int walls[4];
 	vector <Object> objectsInRoom;
+	vector <Enemy> enemiesInRoom;
+	
 	
 
 
@@ -63,6 +66,9 @@ public:
 
 	void const listObjectsInRoom();
 	void removeObjectInRoomByName(string n); 
+
+	vector <Enemy> const getEnemiesInRoom();
+	void setEnemiesInRoom(vector <Enemy> &e);
 
 	void createExits(Room &north, Room &south, Room &east, Room &west, int n, int s, int e, int w);
 

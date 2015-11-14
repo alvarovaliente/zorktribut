@@ -50,7 +50,7 @@ int main()
 
 	room1->createExits(*room2,*wall, *room3,*wall,0,1,0,1);
 	room2->createExits(*wall,*room1,*wall,*wall,1,0,1,1);
-	room3->createExits(*wall, *wall, *wall, *room1, 0, 0, 0, 1);
+	room3->createExits(*wall, *wall, *wall, *room1, 1, 1, 1, 0);
 
 	while (!exitGame)
 	{

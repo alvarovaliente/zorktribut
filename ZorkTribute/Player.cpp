@@ -240,41 +240,42 @@ void Player::useObject(string n)
 
 				if (it->getName().substr(check, it->getName().length()) == "key")
 				{
-					string dirAux;
-					cout << "\n Which direction should I use the key? \n";
-					cout << "->";
-					cin >> dirAux;
 
-					if (dirAux == "north")
+					if (this->actualRoom->getNorth()->getDoor() == 2)
 					{
-						
-					}
-					else if (dirAux == "south")
-					{
-
-					}
-					else if (dirAux == "east")
-					{
-						if (this->actualRoom->getEast()->getDoor() == 2) //means that the door needs a key to be open
+						if (this->actualRoom->getNorth()->getDoorOpen() == false)
 						{
-							if (this->actualRoom->getEast()->getDoorOpen() == false)
-							{
-								this->actualRoom->getEast()->setDoorOpen(true);
-								cout << "\n Door opened! You can enter now!\n";							
-							}
-							else
-							{
-								cout << "\n The door it's already open! \n";
-							}
+							this->actualRoom->getNorth()->setDoorOpen(true);
+							cout << "\nSeems like the key just opened the north door!\n";
 						}
 					}
-					else if (dirAux == "west")
+					else if (this->actualRoom->getSouth()->getDoor() == 2)
 					{
-
+						if (this->actualRoom->getSouth()->getDoorOpen() == false)
+						{
+							this->actualRoom->getSouth()->setDoorOpen(true);
+							cout << "\nSeems like the key just opened the south door!\n";
+						}
+					}
+					else if (this->actualRoom->getEast()->getDoor() == 2)
+					{
+						if (this->actualRoom->getEast()->getDoorOpen() == false)
+						{
+							this->actualRoom->getEast()->setDoorOpen(true);
+							cout << "\nSeems like the key just opened the east door!\n";
+						}
+					}
+					else if (this->actualRoom->getWest()->getDoor() == 2)
+					{
+						if (this->actualRoom->getWest()->getDoorOpen() == false)
+						{
+							this->actualRoom->getWest()->setDoorOpen(true);
+							cout << "\nSeems like the key just opened the west door!\n";
+						}
 					}
 					else
 					{
-						cout << "\n I don't recognise that direction! \n";
+						cout << "\n Seems nothing happens. \n";
 					}
 					
 
@@ -308,91 +309,125 @@ void Player::openDoor(Room &ar, string dir)
 {
 	if (dir == "north")
 	{
-		if (ar.getNorth()->getDoorOpen() == true)
+		if (ar.getNorth()->getDoor() != 0)
 		{
-			cout << "\n The door it's already open!\n";
-		}
-		else
-		{
-			if (ar.getNorth()->getDoor() == 1 && ar.getNorth()->getDoorOpen() == false) 
+			if (ar.getNorth()->getDoorOpen() == true)
 			{
-				ar.getNorth()->setDoorOpen(true);
-				cout << "\n Door opened! You can enter now!\n";
-
-				int scoreAux = this->getScore();
-				this->setScore(scoreAux+=5);
+				cout << "\n The door it's already open!\n";
 			}
 			else
 			{
-				cout << "\nThere is no door to be open!\n";
+				if (ar.getNorth()->getDoor() == 1 && ar.getNorth()->getDoorOpen() == false)
+				{
+					ar.getNorth()->setDoorOpen(true);
+					cout << "\n Door opened! You can enter now!\n";
+
+					int scoreAux = this->getScore();
+					this->setScore(scoreAux += 5);
+				}
+				else if (ar.getNorth()->getDoor() == 2 && ar.getNorth()->getDoorOpen() == false)
+				{
+					cout << "\n The door seems to need a key to be opened!.";
+				}
+				else
+				{
+					cout << "\nThere is no door to be open!\n";
+				}
 			}
+		}
+		else
+		{
+			cout << "\nThere is no door to be open!\n";
 		}
 		
 	}
 	else if (dir == "south")
 	{
-		if (ar.getSouth()->getDoorOpen() == true)
+		if (ar.getSouth()->getDoor() != 0)
 		{
-			cout << "\n The door it's already open!\n";
-		}
-		else
-		{
-			if (ar.getSouth()->getDoor() == 1 || ar.getSouth()->getDoorOpen() == false)
+			if (ar.getSouth()->getDoorOpen() == true)
 			{
-				ar.getSouth()->setDoorOpen(true);
-				cout << "\n Door opened! You can enter now!\n";
-
-				int scoreAux = this->getScore();
-				this->setScore(scoreAux += 5);
+				cout << "\n The door it's already open!\n";
 			}
 			else
 			{
-				cout << "\nThere is no door to be open!\n";
+				if (ar.getSouth()->getDoor() == 1 && ar.getSouth()->getDoorOpen() == false)
+				{
+					ar.getSouth()->setDoorOpen(true);
+					cout << "\n Door opened! You can enter now!\n";
+
+					int scoreAux = this->getScore();
+					this->setScore(scoreAux += 5);
+				}
+				else if (ar.getSouth()->getDoor() == 2 && ar.getSouth()->getDoorOpen() == false)
+				{
+					cout << "\n The door seems to need a key to be opened!.";
+				}
+				
 			}
+		}
+		else
+		{
+			cout << "\nThere is no door to be open!\n";
 		}
 	}
 	else if (dir == "east")
 	{
-		if (ar.getEast()->getDoorOpen() == true)
+		if (ar.getEast()->getDoor() != 0)
 		{
-			cout << "\n The door it's already open!\n";
-		}
-		else
-		{
-			if (ar.getEast()->getDoor() == 1 && ar.getEast()->getDoorOpen() == false)
+			if (ar.getEast()->getDoorOpen() == true)
 			{
-				ar.getEast()->setDoorOpen(true);
-				cout << "\n Door opened! You can enter now!\n";
-
-				int scoreAux = this->getScore();
-				this->setScore(scoreAux += 5);
+				cout << "\n The door it's already open!\n";
 			}
 			else
 			{
-				cout << "\nThere is no door to be open!\n";
+				if (ar.getEast()->getDoor() == 1 && ar.getEast()->getDoorOpen() == false)
+				{
+					ar.getEast()->setDoorOpen(true);
+					cout << "\n Door opened! You can enter now!\n";
+
+					int scoreAux = this->getScore();
+					this->setScore(scoreAux += 5);
+				}
+				else if (ar.getEast()->getDoor() == 2 && ar.getEast()->getDoorOpen() == false)
+				{
+					cout << "\n The door seems to need a key to be opened!.";
+				}
 			}
+		}
+		else
+		{
+			cout << "\nThere is no door to be open!\n";
 		}
 	}
 	else if (dir == "west")
 	{
-		if (ar.getWest()->getDoorOpen() == true)
+		if(ar.getWest()->getDoor() != 0)
 		{
-			cout << "\n The door it's already open!\n";
-		}
-		else
-		{
-			if (ar.getEast()->getDoor() == 1 || ar.getEast()->getDoorOpen() == false)
+			if (ar.getWest()->getDoorOpen() == true)
 			{
-				ar.getEast()->setDoorOpen(true);
-				cout << "\n Door opened! You can enter now!\n";
-
-				int scoreAux = this->getScore();
-				this->setScore(scoreAux += 5);
+				cout << "\n The door it's already open!\n";
 			}
 			else
 			{
-				cout << "\nThere is no door to be open!\n";
+				if (ar.getWest()->getDoor() == 1 || ar.getWest()->getDoorOpen() == false)
+				{
+					ar.getWest()->setDoorOpen(true);
+					cout << "\n Door opened! You can enter now!\n";
+
+					int scoreAux = this->getScore();
+					this->setScore(scoreAux += 5);
+				}
+				else if (ar.getWest()->getDoor() == 2 && ar.getWest()->getDoorOpen() == false)
+				{
+					cout << "\n The door seems to need a key to be opened!.";
+				}
+			
 			}
+		}
+		else
+		{
+			cout << "\nThere is no door to be open!\n";
 		}
 
 	}
