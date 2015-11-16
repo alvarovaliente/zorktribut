@@ -13,6 +13,7 @@
 #include <iterator>
 #include <vector>
 #include "Inventory.h"
+#include "Enemy.h"
 
 
 using namespace std;
@@ -30,17 +31,40 @@ int main()
 	Room *room3 = new Room("Bath room", "A Bath room with a nice shower! \n \t - Seems to be a door in the west", false, 2, false);
 	Room *wall = new Room("Wall", "You can't pass! It's a wall", false, 0, true);
 
+	vector <Object> objectsRoom1;
+	Object *knife = new Object("knife", "A sharp knife!");
+
+	objectsRoom1.push_back(*knife);
+	room1->setObjectsInRoom(objectsRoom1);
+
 	vector <Object> objectsRoom2;
 	Object *key = new Object("key", "A key for open some doors.");
 	Object *waterBottle = new Object("water bottle", "A glass bottle full of water");
+	
 
 	objectsRoom2.push_back(*key);
 	objectsRoom2.push_back(*waterBottle);
 
 	room2->setObjectsInRoom(objectsRoom2);
 
+	vector <Enemy> enemiesRoom3;
 
-	Player *player = new Player("Player1", 0, 0, *room1);
+	Enemy *wildCat = new Enemy("Wild cat", "A furious wild cat!", 5, 3);
+
+	vector <Object> wildCatDrop;
+
+	Object *potion = new Object("potion", "A healing potion to restore your life");
+
+	wildCatDrop.push_back(*potion);
+
+	wildCat->setDropObjects(wildCatDrop);
+
+	enemiesRoom3.push_back(*wildCat);
+
+	room3->setEnemiesInRoom(enemiesRoom3);
+
+
+	Player *player = new Player("Player1", 0, 0, 10, *room1);
 
 	bool exitGame = false;
 	string order1;
@@ -54,12 +78,11 @@ int main()
 
 	while (!exitGame)
 	{
-		cout << "\n\n MOVES: " << player->getMoves() << "\t SCORE: " << player->getScore() << " ->";
+		cout << "\n\n MOVES: " << player->getMoves() << "\t SCORE: " << player->getScore() << "\t LIFE: " << player->getLife() << " ->";
 
 		getline(cin, order);
 
 		istringstream iss(order);
-
 
 		while (iss >> item)
 			suborders.push_back(item);
@@ -109,7 +132,7 @@ int main()
 					}
 						
 				}
-				else
+				else 
 				{
 					cout << "\n Specify a direction to open the door!";
 				}
@@ -192,6 +215,29 @@ int main()
 				cout << "\n What should I use?! \n";
 			}
 		}
+		//Attack
+		else if (suborders[0] == "attack")
+		{
+			if (suborders.size() == 2)
+			{
+				player->attack(suborders[1],"hands");
+			}
+			else if (suborders.size() > 2)
+			{
+				if (suborders[2] == "with")
+				{
+					player->attack(suborders[1], suborders[3]);
+				}
+				else
+				{
+					cout << "Which with weapon should I attack!?\n";
+				}
+			}
+			else
+			{
+				cout << "\n What should I attack?! \n";
+			}
+		}
 		//Inventory order
 		else if (suborders[0] == "inventory")
 		{
@@ -213,6 +259,11 @@ int main()
 
 		iss.clear();
 		suborders.clear();
+
+		if (player->getLife() <= 0)
+		{
+			exitGame = true;
+		}
 	}
 
 	system("pause");

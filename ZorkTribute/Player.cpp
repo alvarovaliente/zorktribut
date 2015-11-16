@@ -5,11 +5,12 @@
 using namespace std;
 
 
-Player::Player(string n, int s, int m, Room &ac)
+Player::Player(string n, int s, int m, int l, Room &ac)
 {
 	name = n;
 	score = s;
 	moves = m;
+	life = l;
 	actualRoom = &ac;
 	playerInventory = new Inventory();
 }
@@ -44,6 +45,16 @@ void Player::setMoves(int m)
 	moves = m;
 }
 
+int const Player::getLife()
+{
+	return life;
+}
+
+void Player::setLife(int l)
+{
+	life = l;
+}
+
 Room * const Player::getActualRoom()
 {
 	return actualRoom;
@@ -56,17 +67,23 @@ void Player::setActualRoom(Room &ar)
 
 void  Player::goNorth(Room &ar)
 {
+	//if there is no wall in the north..
 	if (ar.getWalls()[0] == 0)
 	{
 		if (ar.getNorth()->getDoorOpen() == true)
 		{		
 			this->setActualRoom(*ar.getNorth());
 			this->lookAround(ar);
-		}
-		else if(ar.getNorth()->getDoorOpen() == false)
+		}//door closed, need to be opened manually
+		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 1)
 		{
 			cout << "\nThe door is closed!\n";
+		}//door closed by key
+		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 2)
+		{
+			cout << "\nThe door seems to need a key to be opened!\n";
 		}
+		
 	}
 	else
 	{
@@ -83,10 +100,14 @@ void Player::goSouth(Room &ar)
 		{
 			this->setActualRoom(*ar.getSouth());
 			this->lookAround(ar);
-		}
-		else if (ar.getSouth()->getDoorOpen() == false)
+		}//door closed, need to be opened manually
+		else if (ar.getSouth()->getDoorOpen() == false && ar.getSouth()->getDoor() == 1)
 		{
 			cout << "\nThe door is closed!\n";
+		}//door closed by key
+		else if (ar.getSouth()->getDoorOpen() == false && ar.getSouth()->getDoor() == 2)
+		{
+			cout << "\nThe door seems to need a key to be opened!\n";
 		}
 	}
 	else
@@ -103,12 +124,12 @@ void Player::goEast(Room &ar)
 		{
 			this->setActualRoom(*ar.getEast());
 			this->lookAround(ar);
-		}
-		else if (ar.getEast()->getDoorOpen() == false && ar.getEast()->getDoor() == 1)//door closed, need to be opened manually
+		}//door closed, need to be opened manually
+		else if (ar.getEast()->getDoorOpen() == false && ar.getEast()->getDoor() == 1)
 		{
 			cout << "\nThe door is closed!\n";
-		}
-		else if (ar.getEast()->getDoorOpen() == false && ar.getEast()->getDoor() == 2)//dor closed by key
+		}//dor closed by key
+		else if (ar.getEast()->getDoorOpen() == false && ar.getEast()->getDoor() == 2)
 		{
 			cout << "\nThe door seems to need a key to be opened!\n";
 		}
@@ -127,10 +148,14 @@ void Player::goWest(Room &ar)
 		{
 			this->setActualRoom(*ar.getWest());
 			this->lookAround(ar);
-		}
-		else if (ar.getWest()->getDoorOpen() == false)
+		}//door closed, need to be opened manually
+		else if (ar.getWest()->getDoorOpen() == false && ar.getWest()->getDoor() == 1)
 		{
 			cout << "\nThe door is closed!\n";
+		}//dor closed by key
+		else if (ar.getWest()->getDoorOpen() == false && ar.getWest()->getDoor() == 2)
+		{
+			cout << "\nThe door seems to need a key to be opened!\n";
 		}
 	}
 	else
@@ -146,6 +171,8 @@ void const Player::lookAround(Room &ar)
 	cout << "\n";
 
 	this->getActualRoom()->listObjectsInRoom();
+
+	this->getActualRoom()->listEnemiesInRoom();
 }
 
 void Player::pickObject(string n)
@@ -158,7 +185,7 @@ void Player::pickObject(string n)
 	{
 		int check = it->getName().find(n);//check the first ocurrence of the word
 
-		if (check >= 0) //means we have an ocurrence
+		if (check >= 0)//means we have an ocurrence
 		{
 			//if the substring is equal the object can be picked
 			if (it->getName().substr(check, it->getName().length()) == n)
@@ -240,13 +267,17 @@ void Player::useObject(string n)
 
 				if (it->getName().substr(check, it->getName().length()) == "key")
 				{
-
+					//check the directions if we have a door that can be openened with a key and we open it
 					if (this->actualRoom->getNorth()->getDoor() == 2)
 					{
 						if (this->actualRoom->getNorth()->getDoorOpen() == false)
 						{
 							this->actualRoom->getNorth()->setDoorOpen(true);
 							cout << "\nSeems like the key just opened the north door!\n";
+
+							int scoreAux = this->getScore();
+							scoreAux += 5;
+							this->setScore(scoreAux);
 						}
 					}
 					else if (this->actualRoom->getSouth()->getDoor() == 2)
@@ -255,6 +286,10 @@ void Player::useObject(string n)
 						{
 							this->actualRoom->getSouth()->setDoorOpen(true);
 							cout << "\nSeems like the key just opened the south door!\n";
+
+							int scoreAux = this->getScore();
+							scoreAux += 5;
+							this->setScore(scoreAux);
 						}
 					}
 					else if (this->actualRoom->getEast()->getDoor() == 2)
@@ -263,6 +298,10 @@ void Player::useObject(string n)
 						{
 							this->actualRoom->getEast()->setDoorOpen(true);
 							cout << "\nSeems like the key just opened the east door!\n";
+
+							int scoreAux = this->getScore();
+							scoreAux += 5;
+							this->setScore(scoreAux);
 						}
 					}
 					else if (this->actualRoom->getWest()->getDoor() == 2)
@@ -271,22 +310,39 @@ void Player::useObject(string n)
 						{
 							this->actualRoom->getWest()->setDoorOpen(true);
 							cout << "\nSeems like the key just opened the west door!\n";
+
+							int scoreAux = this->getScore();
+							scoreAux += 5;
+							this->setScore(scoreAux);
 						}
 					}
 					else
 					{
 						cout << "\n Seems nothing happens. \n";
 					}
-					
-
 				}
 
 				if (it->getName().substr(check, it->getName().length()) == "bottle")
 				{
 					cout << "\nYou drink fresk water! \n";
 				}
-			}
 
+				if (it->getName().substr(check, it->getName().length()) == "knife")
+				{
+					cout << "\nYou play with the knife between your fingers. \n";
+				}
+
+				if (it->getName().substr(check, it->getName().length()) == "potion")
+				{
+					cout << "\nYou drink the potion and restore your life! Awesome! \n";
+					this->setLife(10);
+					objectsInventary.erase(it);
+
+					playerInventory->setObjectsIn(objectsInventary);
+
+					break;
+				}
+			}
 		}
 	}
 
@@ -309,6 +365,7 @@ void Player::openDoor(Room &ar, string dir)
 {
 	if (dir == "north")
 	{
+		//0 means no door for the room
 		if (ar.getNorth()->getDoor() != 0)
 		{
 			if (ar.getNorth()->getDoorOpen() == true)
@@ -316,7 +373,7 @@ void Player::openDoor(Room &ar, string dir)
 				cout << "\n The door it's already open!\n";
 			}
 			else
-			{
+			{	//there is door and the door is closed, so the player open it
 				if (ar.getNorth()->getDoor() == 1 && ar.getNorth()->getDoorOpen() == false)
 				{
 					ar.getNorth()->setDoorOpen(true);
@@ -324,14 +381,10 @@ void Player::openDoor(Room &ar, string dir)
 
 					int scoreAux = this->getScore();
 					this->setScore(scoreAux += 5);
-				}
+				}//there is door but you need to use a key to open it
 				else if (ar.getNorth()->getDoor() == 2 && ar.getNorth()->getDoorOpen() == false)
 				{
 					cout << "\n The door seems to need a key to be opened!.";
-				}
-				else
-				{
-					cout << "\nThere is no door to be open!\n";
 				}
 			}
 		}
@@ -343,6 +396,7 @@ void Player::openDoor(Room &ar, string dir)
 	}
 	else if (dir == "south")
 	{
+		//0 means no door for the room
 		if (ar.getSouth()->getDoor() != 0)
 		{
 			if (ar.getSouth()->getDoorOpen() == true)
@@ -350,7 +404,7 @@ void Player::openDoor(Room &ar, string dir)
 				cout << "\n The door it's already open!\n";
 			}
 			else
-			{
+			{	//there is door and the door is closed, so the player open it
 				if (ar.getSouth()->getDoor() == 1 && ar.getSouth()->getDoorOpen() == false)
 				{
 					ar.getSouth()->setDoorOpen(true);
@@ -358,7 +412,7 @@ void Player::openDoor(Room &ar, string dir)
 
 					int scoreAux = this->getScore();
 					this->setScore(scoreAux += 5);
-				}
+				}//there is door but you need to use a key to open it
 				else if (ar.getSouth()->getDoor() == 2 && ar.getSouth()->getDoorOpen() == false)
 				{
 					cout << "\n The door seems to need a key to be opened!.";
@@ -372,7 +426,7 @@ void Player::openDoor(Room &ar, string dir)
 		}
 	}
 	else if (dir == "east")
-	{
+	{	//0 means no door for the room
 		if (ar.getEast()->getDoor() != 0)
 		{
 			if (ar.getEast()->getDoorOpen() == true)
@@ -380,7 +434,7 @@ void Player::openDoor(Room &ar, string dir)
 				cout << "\n The door it's already open!\n";
 			}
 			else
-			{
+			{	//there is door and the door is closed, so the player open it
 				if (ar.getEast()->getDoor() == 1 && ar.getEast()->getDoorOpen() == false)
 				{
 					ar.getEast()->setDoorOpen(true);
@@ -388,7 +442,7 @@ void Player::openDoor(Room &ar, string dir)
 
 					int scoreAux = this->getScore();
 					this->setScore(scoreAux += 5);
-				}
+				}//there is door but you need to use a key to open it
 				else if (ar.getEast()->getDoor() == 2 && ar.getEast()->getDoorOpen() == false)
 				{
 					cout << "\n The door seems to need a key to be opened!.";
@@ -401,7 +455,7 @@ void Player::openDoor(Room &ar, string dir)
 		}
 	}
 	else if (dir == "west")
-	{
+	{	//0 means no door for the room
 		if(ar.getWest()->getDoor() != 0)
 		{
 			if (ar.getWest()->getDoorOpen() == true)
@@ -409,7 +463,7 @@ void Player::openDoor(Room &ar, string dir)
 				cout << "\n The door it's already open!\n";
 			}
 			else
-			{
+			{	//there is door and the door is closed, so the player open it
 				if (ar.getWest()->getDoor() == 1 || ar.getWest()->getDoorOpen() == false)
 				{
 					ar.getWest()->setDoorOpen(true);
@@ -417,19 +471,17 @@ void Player::openDoor(Room &ar, string dir)
 
 					int scoreAux = this->getScore();
 					this->setScore(scoreAux += 5);
-				}
+				}//there is door but you need to use a key to open it
 				else if (ar.getWest()->getDoor() == 2 && ar.getWest()->getDoorOpen() == false)
 				{
 					cout << "\n The door seems to need a key to be opened!.";
-				}
-			
+				}		
 			}
 		}
 		else
 		{
 			cout << "\nThere is no door to be open!\n";
 		}
-
 	}
 	else
 	{
@@ -447,7 +499,7 @@ void Player::closeDoor(Room &ar, string dir)
 			cout << "\n The door it's already closed!\n";
 		}
 		else
-		{
+		{	
 			if (ar.getNorth()->getDoor() == 1 && ar.getNorth()->getDoorOpen() == true)
 			{
 				ar.getNorth()->setDoorOpen(false);
@@ -468,7 +520,7 @@ void Player::closeDoor(Room &ar, string dir)
 		}
 		else
 		{
-			if (ar.getSouth()->getDoor() == 1 || ar.getSouth()->getDoorOpen() == true)
+			if (ar.getSouth()->getDoor() == 1 && ar.getSouth()->getDoorOpen() == true)
 			{
 				ar.getSouth()->setDoorOpen(false);
 				cout << "\n Door closed!\n";
@@ -487,7 +539,7 @@ void Player::closeDoor(Room &ar, string dir)
 		}
 		else
 		{
-			if (ar.getEast()->getDoor() == 1 || ar.getEast()->getDoorOpen() == true)
+			if (ar.getEast()->getDoor() == 1 && ar.getEast()->getDoorOpen() == true)
 			{
 				ar.getEast()->setDoorOpen(false);
 				cout << "\n Door closed!\n";
@@ -506,7 +558,7 @@ void Player::closeDoor(Room &ar, string dir)
 		}
 		else
 		{
-			if (ar.getEast()->getDoor() == 1 || ar.getEast()->getDoorOpen() == true)
+			if (ar.getEast()->getDoor() == 1 && ar.getEast()->getDoorOpen() == true)
 			{
 				ar.getEast()->setDoorOpen(false);
 				cout << "\n Door closed!\n";
@@ -523,4 +575,158 @@ void Player::closeDoor(Room &ar, string dir)
 		cout << "\nI don't recognise that direction!\n";
 	}
 }
+
+void Player::attack(string n, string w)
+{
+	vector <Enemy> enemiesInRoomAux = this->actualRoom->getEnemiesInRoom();
+
+	vector <Enemy>::iterator it = enemiesInRoomAux.begin();
+
+	int flag = 0;
+
+	for (it; it != enemiesInRoomAux.end(); it++)
+	{
+		int check = it->getName().find(n);//check the first ocurrence of the word
+
+		if (check >= 0) //means we have an ocurrence
+		{
+			//if the substring is equal the enemy can be attacked
+			if (it->getName().substr(check, it->getName().length()) == n)
+			{
+				flag = 1;
+				
+				int enemyLifeAux = it->getLife();
+
+				if (w == "hands")
+				{
+					int randonDamage = rand() % 3;
+
+					if (randonDamage > 0)
+					{
+						enemyLifeAux -= randonDamage;
+					}
+					else
+					{
+						cout << "You fail your attack! \n";
+					}
+					
+
+
+				}
+				else if (w == "knife")
+				{
+					vector <Object> objectsInventary = playerInventory->getObjectsIn();
+
+					vector <Object>::iterator it = objectsInventary.begin();
+
+					int flag = 0;
+				
+					for (it; it != objectsInventary.end(); it++)
+					{
+						int check = it->getName().find(w);//check the first ocurrence of the word
+
+						if (check >= 0) //means we have an ocurrence
+						{
+							//if the substring is equal the object can be droped
+							if (it->getName().substr(check, it->getName().length()) == w)
+							{
+								flag = 1;
+								
+								int randonDamage = rand() % 6;
+								if (randonDamage > 0)
+								{
+									enemyLifeAux -= randonDamage;
+								}
+								else
+								{
+									cout << "You fail your attack! \n";
+								}
+						
+							}
+						}
+					}
+
+					if (flag == 0)
+					{
+						cout << "I don't have any weapon like that one to attack!! \n";
+					}
+
+				}
+
+
+				it->setLife(enemyLifeAux);
+
+				if (enemyLifeAux <= 0) //enemy down
+				{
+					cout << "\n You've killed the " << it->getName() << "!! \n";
+
+					int scoreAux = this->getScore();
+					this->setScore(scoreAux += 10);		
+
+					//look for the drop and set it in the room
+
+					vector <Object> dropAux = it->getDropObjects();
+					vector <Object> objectsInRoomAux = this->getActualRoom()->getObjectsInRoom();
+
+					if (dropAux.size() > 0)
+					{
+						cout << " \nSeems like the enemy dropped something! \n";
+						vector <Object>::iterator itDrop = dropAux.begin();
+
+						for (itDrop; itDrop != dropAux.end(); itDrop++)
+						{
+							cout << "\n \t" << itDrop->getName() << ": " << itDrop->getDescription();
+							objectsInRoomAux.push_back(*itDrop);
+							
+						}
+
+						this->getActualRoom()->setObjectsInRoom(objectsInRoomAux);
+						dropAux.clear();
+					}
+
+					enemiesInRoomAux.erase(it);
+					break;
+				}
+				else
+				{
+					cout << "\n Seems like the enemy still having gains to fight! Keep attacking!! \n";
+
+					//enemy attack
+
+					int playerLifeAux = this->getLife();
+
+					int randonEnemyDamage = rand() % it->getPowerAttack();
+					if (randonEnemyDamage > 0)
+					{
+						playerLifeAux -= randonEnemyDamage;
+
+						this->setLife(playerLifeAux);
+
+						cout << "\n" << it->getName() << "hits you with a damage of " << randonEnemyDamage << "\n";
+
+						if (this->getLife() <= 0)
+						{
+							cout << "\n YOU DIED! END OF THE GAME MOTHER/&/·&$ER!\n";
+						}
+
+					}
+					else
+					{
+						cout << it->getName() << " fails his attack! \n";
+					}
+
+				}
+
+			}
+		}
+	}
+
+	this->actualRoom->setEnemiesInRoom(enemiesInRoomAux);
+
+	if (flag == 0) {
+		cout << "\n I don't see any enemy like this in this room!! \n";
+	}
+}
+
+
 

@@ -145,6 +145,40 @@ void Room::removeObjectInRoomByName(string n)
 	this->setObjectsInRoom(objectsAux);
 }
 
+void const Room::listEnemiesInRoom()
+{
+	vector <Enemy> enemiesAux = getEnemiesInRoom();
+
+	if (enemiesAux.size() > 0)
+	{
+		vector <Enemy>::iterator it = enemiesAux.begin();
+
+		cout << "Warning! Seems to be ememies in the room! \n";
+
+		for (it; it != enemiesAux.end(); it++)
+		{
+			cout << "\n";
+			cout << "\t - ";
+			cout << it->getName();
+			cout << ": ";
+			cout << it->getDescription();
+		}
+
+	}
+
+	
+}
+
+vector <Enemy> const Room::getEnemiesInRoom()
+{
+	return enemiesInRoom;
+}
+
+void Room::setEnemiesInRoom(vector <Enemy> &e)
+{
+	enemiesInRoom = e;
+}
+
 
 void Room::createExits(Room &n, Room &s, Room &e, Room &w, int nor, int sou, int ea, int we)
 {
@@ -153,7 +187,7 @@ void Room::createExits(Room &n, Room &s, Room &e, Room &w, int nor, int sou, int
 	west = &w;
 	east = &e;
 
-	//0 = wall, 1 = room, 2 = door, 3 = key door
+	//0 = no wall, 1 = wall
 	walls[0] = nor;
 	walls[1] = sou;
 	walls[2] = ea;

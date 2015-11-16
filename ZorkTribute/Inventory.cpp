@@ -58,7 +58,7 @@ void const Inventory::checkInventory()
 
 		for (it; it != objectsInAux.end(); it++)
 		{
-			cout << it->getName();
+			cout << "\n" << it->getName() << ": " << it->getDescription();
 			cout << "\n";
 		}
 	}

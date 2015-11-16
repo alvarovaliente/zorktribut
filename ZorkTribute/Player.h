@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "Inventory.h"
+#include <random>
 
 using namespace std;
 
@@ -14,13 +15,14 @@ private:
 	string name;
 	int score;
 	int moves;
+	int life;
 	Room *actualRoom;
 	Inventory *playerInventory;
 
 	
 public:
 
-	Player(string n, int s, int m, Room &ac);
+	Player(string n, int s, int m, int l, Room &ac);
 
 	string const getName();
 	void setName(string n);
@@ -30,6 +32,9 @@ public:
 
 	int const getMoves();
 	void setMoves(int m);
+
+	int const getLife();
+	void setLife(int l);
 
 	Room * const getActualRoom();
 	void setActualRoom(Room &ar);
@@ -41,18 +46,20 @@ public:
 
 	void const lookAround(Room &ar);
 	void const lookInventory();
+	Inventory  const getInventory();
 
 	void pickObject(string n);
 	void dropObject(string n); 
-
 	void useObject(string n);
 
-	Inventory  const getInventory();
+	void attack(string n,string w);
 
 	void const itsWall();
 
 	void openDoor(Room &ar, string dir);
 	void closeDoor(Room &ar, string dir);
+
+	void openObject(string n);
 
 	~Player();
 

@@ -20,7 +20,7 @@ private:
 	Room *west;
 	Room *east;
 	int door; //the room has a door to enter and depending on the number the door can be in different states 0= open, 1= close (have to open it), 2= need a key
-	bool doorOpen;
+	bool doorOpen; //true = door is open false = door is closed
 	int walls[4];
 	vector <Object> objectsInRoom;
 	vector <Enemy> enemiesInRoom;
@@ -70,6 +70,9 @@ public:
 	vector <Enemy> const getEnemiesInRoom();
 	void setEnemiesInRoom(vector <Enemy> &e);
 
+	void const listEnemiesInRoom();
+	
+	//foar rooms conected to this room and the int values are 0 = no wall, 1 = wall
 	void createExits(Room &north, Room &south, Room &east, Room &west, int n, int s, int e, int w);
 
 	//Destructor
