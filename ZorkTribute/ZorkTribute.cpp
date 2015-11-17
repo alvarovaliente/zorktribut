@@ -34,7 +34,7 @@ int main()
 	Room *corridor = new Room("Desolated corridor", "A corridor half iluminated with conections to other rooms \n \t - Seems to be a door in the north, south and east", false, 1, false);
 	Room *testingRoom = new Room("Testing lab room", "A testing lab where the people that were here research with radiation an animals \n \t ", false, 0, true);
 	Room *maintenanceRoom = new Room("Maintenance room", "A maintenance room where these people keep of the cientific stuff. Maybe you can find something useful here. \n \t", false, 2, false);
-	Room *finalRoom = new Room("Exit room","A room with a exit sign in the north \n", false, 1, false);
+	Room *finalRoom = new Room("Exit room","A room with a exit sign in the east \n", false, 1, false);
 	Room *exit = new Room("Outside world"," \n \t \t CONGRATULATIONS! you are in the outside world!!! \n",false ,3,false);
 
 	Room *wall = new Room("Wall", "You can't pass! It's a wall", false, 0, true);
@@ -113,7 +113,7 @@ int main()
 	corridor->createExits(*testingRoom, *maintenanceRoom, *finalRoom, *destroyedRoom, 0, 0, 0, 0);
 	testingRoom->createExits(*wall, *corridor, *wall, *wall, 1, 0, 1, 1);
 	maintenanceRoom->createExits(*corridor, *wall, *wall, *wall, 0, 1, 1, 1);
-	finalRoom->createExits(*exit, *wall, *wall, *corridor, 0, 1, 1, 0);
+	finalRoom->createExits(*wall, *wall, *exit, *corridor, 1, 1, 0, 0);
 
 
 	Player *player = new Player("Nick Montana", 0, 0, 10, 3, *destroyedRoom);
@@ -126,7 +126,7 @@ int main()
 
 	cout << " \t \t \t WELCOME TO ZORKALYPTIC \n";
 
-	cout << " \n An apocalyptic text adventure game based on the idea of Zork and ambiented in a post-apocalyptic future. \n";
+	cout << " \n An apocalyptic text adventure game based on the idea of Zork and ambiented in a post-apocalyptic future by Alvaro Valiente. \n";
 
 	cout << "\n You are in an abandoned laboratory, try to escape ;) \n";
 
