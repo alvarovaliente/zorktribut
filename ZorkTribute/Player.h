@@ -16,13 +16,14 @@ private:
 	int score;
 	int moves;
 	int life;
+	int powerAttack;
 	Room *actualRoom;
 	Inventory *playerInventory;
 
 	
 public:
 
-	Player(string n, int s, int m, int l, Room &ac);
+	Player(string n, int s, int m, int l, int pa, Room &ac);
 
 	string const getName();
 	void setName(string n);
@@ -35,6 +36,9 @@ public:
 
 	int const getLife();
 	void setLife(int l);
+
+	int const getPowerAttack();
+	void setPowerAttack(int pa);
 
 	Room * const getActualRoom();
 	void setActualRoom(Room &ar);

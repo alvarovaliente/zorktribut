@@ -5,12 +5,13 @@
 using namespace std;
 
 
-Player::Player(string n, int s, int m, int l, Room &ac)
+Player::Player(string n, int s, int m, int l, int pa, Room &ac)
 {
 	name = n;
 	score = s;
 	moves = m;
 	life = l;
+	powerAttack = pa;
 	actualRoom = &ac;
 	playerInventory = new Inventory();
 }
@@ -55,6 +56,16 @@ void Player::setLife(int l)
 	life = l;
 }
 
+int const Player::getPowerAttack()
+{
+	return powerAttack;
+}
+
+void Player::setPowerAttack(int pa)
+{
+	powerAttack = pa;
+}
+
 Room * const Player::getActualRoom()
 {
 	return actualRoom;
@@ -82,6 +93,10 @@ void  Player::goNorth(Room &ar)
 		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 2)
 		{
 			cout << "\nThe door seems to need a key to be opened!\n";
+		}//closed by master key
+		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 3)
+		{
+			cout << "\nThe door seems to need a Master key to be opened!\n";
 		}
 		
 	}
@@ -108,6 +123,10 @@ void Player::goSouth(Room &ar)
 		else if (ar.getSouth()->getDoorOpen() == false && ar.getSouth()->getDoor() == 2)
 		{
 			cout << "\nThe door seems to need a key to be opened!\n";
+		}//closed by master key
+		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 3)
+		{
+			cout << "\nThe door seems to need a Master key to be opened!\n";
 		}
 	}
 	else
@@ -132,6 +151,10 @@ void Player::goEast(Room &ar)
 		else if (ar.getEast()->getDoorOpen() == false && ar.getEast()->getDoor() == 2)
 		{
 			cout << "\nThe door seems to need a key to be opened!\n";
+		}//closed by master key
+		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 3)
+		{
+			cout << "\nThe door seems to need a Master key to be opened!\n";
 		}
 	}
 	else
@@ -156,6 +179,10 @@ void Player::goWest(Room &ar)
 		else if (ar.getWest()->getDoorOpen() == false && ar.getWest()->getDoor() == 2)
 		{
 			cout << "\nThe door seems to need a key to be opened!\n";
+		}//closed by master key
+		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 3)
+		{
+			cout << "\nThe door seems to need a Master key to be opened!\n";
 		}
 	}
 	else
@@ -265,7 +292,7 @@ void Player::useObject(string n)
 			{
 				flag = 1;
 
-				if (it->getName().substr(check, it->getName().length()) == "key")
+				if (it->getName().substr(check, it->getName().length()) == "Key")
 				{
 					//check the directions if we have a door that can be openened with a key and we open it
 					if (this->actualRoom->getNorth()->getDoor() == 2)
@@ -322,26 +349,125 @@ void Player::useObject(string n)
 					}
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "bottle")
+				if (it->getName().substr(check, it->getName().length()) == "Masterkey")
+				{
+					//check the directions if we have a door that can be openened with a master key and we open it
+					if (this->actualRoom->getNorth()->getDoor() == 3)
+					{
+						if (this->actualRoom->getNorth()->getDoorOpen() == false)
+						{
+							this->actualRoom->getNorth()->setDoorOpen(true);
+							cout << "\nSeems like the master key just opened the north door!\n";
+
+							int scoreAux = this->getScore();
+							scoreAux += 10;
+							this->setScore(scoreAux);
+						}
+					}
+					else if (this->actualRoom->getSouth()->getDoor() == 3)
+					{
+						if (this->actualRoom->getSouth()->getDoorOpen() == false)
+						{
+							this->actualRoom->getSouth()->setDoorOpen(true);
+							cout << "\nSeems like the master key just opened the south door!\n";
+
+							int scoreAux = this->getScore();
+							scoreAux += 10;
+							this->setScore(scoreAux);
+						}
+					}
+					else if (this->actualRoom->getEast()->getDoor() == 3)
+					{
+						if (this->actualRoom->getEast()->getDoorOpen() == false)
+						{
+							this->actualRoom->getEast()->setDoorOpen(true);
+							cout << "\nSeems like the master key just opened the east door!\n";
+
+							int scoreAux = this->getScore();
+							scoreAux += 10;
+							this->setScore(scoreAux);
+						}
+					}
+					else if (this->actualRoom->getWest()->getDoor() == 3)
+					{
+						if (this->actualRoom->getWest()->getDoorOpen() == false)
+						{
+							this->actualRoom->getWest()->setDoorOpen(true);
+							cout << "\nSeems like the master key just opened the west door!\n";
+
+							int scoreAux = this->getScore();
+							scoreAux += 10;
+							this->setScore(scoreAux);
+						}
+					}
+					else
+					{
+						cout << "\n Seems nothing happens. \n";
+					}
+				}
+
+				if (it->getName().substr(check, it->getName().length()) == "Bottle")
 				{
 					cout << "\nYou drink fresk water! \n";
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "knife")
+				if (it->getName().substr(check, it->getName().length()) == "Knife")
 				{
 					cout << "\nYou play with the knife between your fingers. \n";
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "potion")
+				if (it->getName().substr(check, it->getName().length()) == "Journal")
 				{
-					cout << "\nYou drink the potion and restore your life! Awesome! \n";
-					this->setLife(10);
+					cout << "\nYou read the journal, at least part of it. It writes about what happened. \n";
+				}
+
+				if (it->getName().substr(check, it->getName().length()) == "Transmutter")
+				{
+					cout << "\nYou turn it on and it started to glow in different colours and you started to fell weird. Better turn it off again. \n";
+				}
+
+				if (it->getName().substr(check, it->getName().length()) == "Meat")
+				{
+					cout << "\nYou eat the meat and restore part of your life! \n";
+
+					int lifeAux = this->getLife();
+					lifeAux += 5;
+					if (lifeAux > 10)
+					{
+						this->setLife(10);
+					}
+					else
+					{
+						this->setLife(lifeAux);
+					}
+					
 					objectsInventary.erase(it);
-
 					playerInventory->setObjectsIn(objectsInventary);
-
 					break;
 				}
+
+				if (it->getName().substr(check, it->getName().length()) == "Stimulant")
+				{
+					cout << "\nYou use the stimulant and it restore your full life! Awesome! \n";
+
+					this->setLife(10);
+					objectsInventary.erase(it);
+					playerInventory->setObjectsIn(objectsInventary);
+					break;
+				}
+
+				if (it->getName().substr(check, it->getName().length()) == "Boost")
+				{
+					cout << "\nYour power attack increases!! Let's kill mutants!! \n";
+					
+					int powerAttackAux = this->getPowerAttack();
+					this->setPowerAttack(powerAttackAux += 5);
+					objectsInventary.erase(it);
+					playerInventory->setObjectsIn(objectsInventary);
+					break;
+				}
+
+
 			}
 		}
 	}
@@ -582,6 +708,9 @@ void Player::attack(string n, string w)
 
 	vector <Enemy>::iterator it = enemiesInRoomAux.begin();
 
+	int enemyLifeAux;
+	int powerAttackAux;
+
 	int flag = 0;
 
 	for (it; it != enemiesInRoomAux.end(); it++)
@@ -595,25 +724,28 @@ void Player::attack(string n, string w)
 			{
 				flag = 1;
 				
-				int enemyLifeAux = it->getLife();
+				enemyLifeAux = it->getLife();
+
+				powerAttackAux = this->getPowerAttack();
 
 				if (w == "hands")
 				{
-					int randonDamage = rand() % 3;
+					int randonDamage = rand() % powerAttackAux;
 
 					if (randonDamage > 0)
 					{
 						enemyLifeAux -= randonDamage;
+						cout << "\n You've made " << randonDamage << " on the enemy\n";
 					}
 					else
 					{
-						cout << "You fail your attack! \n";
+						cout << "\nYou've failed your attack! \n";
 					}
 					
 
 
 				}
-				else if (w == "knife")
+				else if (w == "Knife")
 				{
 					vector <Object> objectsInventary = playerInventory->getObjectsIn();
 
@@ -632,25 +764,62 @@ void Player::attack(string n, string w)
 							{
 								flag = 1;
 								
-								int randonDamage = rand() % 6;
+								int randonDamage = rand() % (powerAttackAux +3);
 								if (randonDamage > 0)
 								{
 									enemyLifeAux -= randonDamage;
+									cout << "\n You've made " << randonDamage << " on " << it->getName() << "\n";
 								}
 								else
 								{
-									cout << "You fail your attack! \n";
+									cout << "\n You fail your attack! \n";
 								}
 						
 							}
 						}
 					}
 
-					if (flag == 0)
-					{
-						cout << "I don't have any weapon like that one to attack!! \n";
-					}
+				}
+				else if (w == "Shootgun")
+				{
+					vector <Object> objectsInventary = playerInventory->getObjectsIn();
 
+					vector <Object>::iterator it = objectsInventary.begin();
+
+					int flag = 0;
+
+					for (it; it != objectsInventary.end(); it++)
+					{
+						int check = it->getName().find(w);//check the first ocurrence of the word
+
+						if (check >= 0) //means we have an ocurrence
+						{
+							//if the substring is equal the object can be droped
+							if (it->getName().substr(check, it->getName().length()) == w)
+							{
+								flag = 1;
+								
+								powerAttackAux += 10;
+
+								int randonDamage = rand() % powerAttackAux + 5;
+								if (randonDamage > 0)
+								{
+									enemyLifeAux -= randonDamage;
+									cout << "\n You've made " << randonDamage << " on " << it->getName() << "\n";
+								}
+								else
+								{
+									cout << " \nYou've failed your attack! \n";
+								}
+
+							}
+						}
+					}
+				}
+
+				if (flag == 0)
+				{
+					cout << "I don't have any weapon like that one to attack!! \n";
 				}
 
 
@@ -689,7 +858,7 @@ void Player::attack(string n, string w)
 				}
 				else
 				{
-					cout << "\n Seems like the enemy still having gains to fight! Keep attacking!! \n";
+					cout << "\n Life's enemy is "<< it->getLife() << " and seems like still having gains to fight! Keep attacking!! \n";
 
 					//enemy attack
 
@@ -702,7 +871,7 @@ void Player::attack(string n, string w)
 
 						this->setLife(playerLifeAux);
 
-						cout << "\n" << it->getName() << "hits you with a damage of " << randonEnemyDamage << "\n";
+						cout << "\n" << it->getName() << " hits you with a damage of " << randonEnemyDamage << "\n";
 
 						if (this->getLife() <= 0)
 						{
@@ -712,7 +881,7 @@ void Player::attack(string n, string w)
 					}
 					else
 					{
-						cout << it->getName() << " fails his attack! \n";
+						cout << "\n " << it->getName() << " fails his attack! \n";
 					}
 
 				}

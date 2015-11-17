@@ -14,9 +14,12 @@
 #include <vector>
 #include "Inventory.h"
 #include "Enemy.h"
+#include <iomanip>
 
 
 using namespace std;
+
+
 
 
 int main()
@@ -26,69 +29,126 @@ int main()
 	string item;
 	vector <string>  suborders;
 
-	Room *room1 = new Room("Living room", "It's a nice living room with a futuristic forniture \n\t - Seems to be a door in the north and other one in the east", false, 0, true);
-	Room *room2 = new Room("Bed room", "A fucking awesome room with a nice bed to fuck \n \t - Seems to be a door in the south", false, 1, false);
-	Room *room3 = new Room("Bath room", "A Bath room with a nice shower! \n \t - Seems to be a door in the west", false, 2, false);
+	Room *destroyedRoom = new Room("Destroyed room", "A room where everything is a mess and is half destroyed \n\t - Seems to be a door in the east and another one in the north", false, 0, true);
+	Room *bathRoom = new Room("Destroyed bath room", "It's a bathroom completely destroyed with a fluorescent light blinking \n \t - Seems to be a door in the south", false, 1, false);
+	Room *corridor = new Room("Desolated corridor", "A corridor half iluminated with conections to other rooms \n \t - Seems to be a door in the north, south and east", false, 1, false);
+	Room *testingRoom = new Room("Testing lab room", "A testing lab where the people that were here research with radiation an animals \n \t ", false, 0, true);
+	Room *maintenanceRoom = new Room("Maintenance room", "A maintenance room where these people keep of the cientific stuff. Maybe you can find something useful here. \n \t", false, 2, false);
+	Room *finalRoom = new Room("Exit room","A room with a exit sign in the north \n", false, 1, false);
+	Room *exit = new Room("Outside world","CONGRATULATIONS! you are in the outside world \n",false ,3,false);
+
 	Room *wall = new Room("Wall", "You can't pass! It's a wall", false, 0, true);
 
-	vector <Object> objectsRoom1;
-	Object *knife = new Object("knife", "A sharp knife!");
+	vector <Object> objectsDestroyedRoom;
+	vector <Object> objectsBathroom;
 
-	objectsRoom1.push_back(*knife);
-	room1->setObjectsInRoom(objectsRoom1);
+	vector <Object> objectstestingRoom;
+	vector <Object> objectsMaintenanceRoom;
+	vector <Object> objectsFinalRoom;
 
-	vector <Object> objectsRoom2;
-	Object *key = new Object("key", "A key for open some doors.");
-	Object *waterBottle = new Object("water bottle", "A glass bottle full of water");
+	vector <Enemy> enemiesTestingRoom;
+	vector <Enemy> enemiesFinalRoom;
+	vector <Enemy> enemiesBathRoom;
+
+	vector <Object> mutantDogDrop;
+	vector <Object> superMutantDrop;
+
+	Enemy *mutantFly = new Enemy("Mutant Fly","That's a huge shiny fly! ",5,2);
+	Enemy *mutantDog = new Enemy("Mutant Dog","A mutant dog with a big mouth full of huge teeths",10,4);
+	Enemy *superMutant = new Enemy("Super Mutant", "A huge super mutant with crazy eyes and death hungry!", 18, 7);
+
+	Object *rustyKnife = new Object("Rusty Knife", "A rusty knife! Seems you can still doing some damage with it.");
+	Object *shootgun = new Object("Shootgun", "And old shootgun but seems still firing");
+	Object *accesskey = new Object("Key","A access key to open some lab doors");
+	Object *masterKey = new Object("Masterkey","This key open the exit door");
+	Object *destroyedJournal = new Object("Destroyed Journal","A journal from the past decade semi destroyed.");
+	Object *conservedMeat = new Object("Conserved Meat", "Some conserver meat that can restore your life");
+	Object *stimulant = new Object("Stimulant", "A stimulant that can restore your life");
+	Object *dnaTransmutter = new Object("Dna Transmutter","A Dna Transmutter that can change this in this world. Seems very important.");
+	Object *boost = new Object("Boost", "A boost that increse your attack power");
+	Object *waterBottle = new Object("Water Bottle", "A glass bottle full of water");
 	
+	
+	//set objects in destroyed room
+	objectsDestroyedRoom.push_back(*destroyedJournal);
+	objectsDestroyedRoom.push_back(*rustyKnife);
+	destroyedRoom->setObjectsInRoom(objectsDestroyedRoom);
 
-	objectsRoom2.push_back(*key);
-	objectsRoom2.push_back(*waterBottle);
+	//set objects in bathroom
+	objectsBathroom.push_back(*waterBottle);
+	bathRoom->setObjectsInRoom(objectsBathroom);
 
-	room2->setObjectsInRoom(objectsRoom2);
+	//set objects in testing room
+	objectstestingRoom.push_back(*dnaTransmutter);
+	objectstestingRoom.push_back(*stimulant);
+	testingRoom->setObjectsInRoom(objectstestingRoom);
 
-	vector <Enemy> enemiesRoom3;
+	//set objects in maintenance room
+	objectsMaintenanceRoom.push_back(*conservedMeat);
+	objectsMaintenanceRoom.push_back(*shootgun);
+	maintenanceRoom->setObjectsInRoom(objectsMaintenanceRoom);
 
-	Enemy *wildCat = new Enemy("Wild cat", "A furious wild cat!", 5, 3);
+	//set drop objects for the mutant dog
+	mutantDogDrop.push_back(*boost);
+	mutantDogDrop.push_back(*accesskey);
+	mutantDog->setDropObjects(mutantDogDrop);
 
-	vector <Object> wildCatDrop;
+	//set drop objects for the super mutant
+	superMutantDrop.push_back(*masterKey);
+	superMutant->setDropObjects(superMutantDrop);
+	
+	//setting the enemies in the rooms
+	enemiesTestingRoom.push_back(*mutantDog);
+	testingRoom->setEnemiesInRoom(enemiesTestingRoom);
 
-	Object *potion = new Object("potion", "A healing potion to restore your life");
+	enemiesFinalRoom.push_back(*superMutant);
+	finalRoom->setEnemiesInRoom(enemiesFinalRoom);
 
-	wildCatDrop.push_back(*potion);
+	enemiesBathRoom.push_back(*mutantFly);
+	bathRoom->setEnemiesInRoom(enemiesBathRoom);
 
-	wildCat->setDropObjects(wildCatDrop);
+	//create all the connected map
+	destroyedRoom->createExits(*bathRoom, *wall, *corridor, *wall, 0, 1, 0, 1);
+	bathRoom->createExits(*wall, *destroyedRoom, *wall, *wall, 1, 0, 1, 1);
+	corridor->createExits(*testingRoom, *maintenanceRoom, *finalRoom, *destroyedRoom, 0, 0, 0, 0);
+	testingRoom->createExits(*wall, *corridor, *wall, *wall, 1, 0, 1, 1);
+	maintenanceRoom->createExits(*corridor, *wall, *wall, *wall, 0, 1, 1, 1);
+	finalRoom->createExits(*exit, *wall, *wall, *corridor, 0, 1, 1, 0);
 
-	enemiesRoom3.push_back(*wildCat);
 
-	room3->setEnemiesInRoom(enemiesRoom3);
-
-
-	Player *player = new Player("Player1", 0, 0, 10, *room1);
+	Player *player = new Player("Nick Montana", 0, 0, 10, 3, *destroyedRoom);
 
 	bool exitGame = false;
 	string order1;
 	string order2;
 	string orderDirection;
-	
 
-	room1->createExits(*room2,*wall, *room3,*wall,0,1,0,1);
-	room2->createExits(*wall,*room1,*wall,*wall,1,0,1,1);
-	room3->createExits(*wall, *wall, *wall, *room1, 1, 1, 1, 0);
+
+	cout << " \t \t \t WELCOME TO ZORKALYPTIC \n";
+
+	cout << " \n An apocalyptic text adventure game based on the idea of Zork and ambiented in a post-apocalyptic future. \n";
+
+	cout << "\n You are in an abandoned laboratory, try to escape ;) \n";
+
+	cout << "\n" << setfill('-') << setw(90);
 
 	while (!exitGame)
 	{
 		cout << "\n\n MOVES: " << player->getMoves() << "\t SCORE: " << player->getScore() << "\t LIFE: " << player->getLife() << " ->";
 
 		getline(cin, order);
+	
 
+		if (order == "") { order = "incorrect"; }
+			
 		istringstream iss(order);
+			while (iss >> item)
+				suborders.push_back(item);
 
-		while (iss >> item)
-			suborders.push_back(item);
-
-		int nMovesAux = player->getMoves();
-		player->setMoves(++nMovesAux);
+			int nMovesAux = player->getMoves();
+			player->setMoves(++nMovesAux);
+		
+		
 
 
 		//Go order
@@ -251,7 +311,6 @@ int main()
 			exitGame = true;
 			break;
 		}
-
 		else
 		{
 			cout << "\n I don't recognise that order bru! \n";
@@ -264,10 +323,16 @@ int main()
 		{
 			exitGame = true;
 		}
+
+		if (player->getActualRoom()->getName() == "Outside world")
+		{
+			exitGame = true;
+		}
 	}
 
 	system("pause");
 }
+
 
 
 
