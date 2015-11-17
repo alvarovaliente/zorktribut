@@ -96,7 +96,7 @@ void  Player::goNorth(Room &ar)
 		}//closed by master key
 		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 3)
 		{
-			cout << "\nThe door seems to need a Master key to be opened!\n";
+			cout << "\nThe door seems to need a master key to be opened!\n";
 		}
 		
 	}
@@ -126,7 +126,7 @@ void Player::goSouth(Room &ar)
 		}//closed by master key
 		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 3)
 		{
-			cout << "\nThe door seems to need a Master key to be opened!\n";
+			cout << "\nThe door seems to need a master key to be opened!\n";
 		}
 	}
 	else
@@ -154,7 +154,7 @@ void Player::goEast(Room &ar)
 		}//closed by master key
 		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 3)
 		{
-			cout << "\nThe door seems to need a Master key to be opened!\n";
+			cout << "\nThe door seems to need a master key to be opened!\n";
 		}
 	}
 	else
@@ -182,7 +182,7 @@ void Player::goWest(Room &ar)
 		}//closed by master key
 		else if (ar.getNorth()->getDoorOpen() == false && ar.getNorth()->getDoor() == 3)
 		{
-			cout << "\nThe door seems to need a Master key to be opened!\n";
+			cout << "\nThe door seems to need a master key to be opened!\n";
 		}
 	}
 	else
@@ -231,7 +231,7 @@ void Player::pickObject(string n)
 	}
 
 	if (it == objectsInRoomAux.end()) {
-		cout << "\n I don't see any object like this in this room!! \n";
+		cout << "\n I don't see any object like this in this room bro! \n";
 	}
 	
 }
@@ -269,7 +269,7 @@ void Player::dropObject(string n)
 	}
 
 	if (!flag) {
-		cout << "\n I don't see any object like this in the inventory!! \n";
+		cout << "\n I don't see any object like this in the inventory bro!! \n";
 	}
 }
 
@@ -292,7 +292,7 @@ void Player::useObject(string n)
 			{
 				flag = 1;
 
-				if (it->getName().substr(check, it->getName().length()) == "Key")
+				if (it->getName().substr(check, it->getName().length()) == "key")
 				{
 					//check the directions if we have a door that can be openened with a key and we open it
 					if (this->actualRoom->getNorth()->getDoor() == 2)
@@ -349,7 +349,7 @@ void Player::useObject(string n)
 					}
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "Masterkey")
+				if (it->getName().substr(check, it->getName().length()) == "masterkey")
 				{
 					//check the directions if we have a door that can be openened with a master key and we open it
 					if (this->actualRoom->getNorth()->getDoor() == 3)
@@ -406,27 +406,27 @@ void Player::useObject(string n)
 					}
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "Bottle")
+				if (it->getName().substr(check, it->getName().length()) == "bottle")
 				{
 					cout << "\nYou drink fresk water! \n";
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "Knife")
+				if (it->getName().substr(check, it->getName().length()) == "knife")
 				{
 					cout << "\nYou play with the knife between your fingers. \n";
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "Journal")
+				if (it->getName().substr(check, it->getName().length()) == "journal")
 				{
 					cout << "\nYou read the journal, at least part of it. It writes about what happened. \n";
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "Transmutter")
+				if (it->getName().substr(check, it->getName().length()) == "transmutter")
 				{
 					cout << "\nYou turn it on and it started to glow in different colours and you started to fell weird. Better turn it off again. \n";
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "Meat")
+				if (it->getName().substr(check, it->getName().length()) == "meat")
 				{
 					cout << "\nYou eat the meat and restore part of your life! \n";
 
@@ -446,7 +446,7 @@ void Player::useObject(string n)
 					break;
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "Stimulant")
+				if (it->getName().substr(check, it->getName().length()) == "stimulant")
 				{
 					cout << "\nYou use the stimulant and it restore your full life! Awesome! \n";
 
@@ -456,7 +456,7 @@ void Player::useObject(string n)
 					break;
 				}
 
-				if (it->getName().substr(check, it->getName().length()) == "Boost")
+				if (it->getName().substr(check, it->getName().length()) == "boost")
 				{
 					cout << "\nYour power attack increases!! Let's kill mutants!! \n";
 					
@@ -473,7 +473,7 @@ void Player::useObject(string n)
 	}
 
 	if (!flag) {
-		cout << "\n I don't see any object like this in the inventory!! \n";
+		cout << "\n I don't see any object like this in the inventory bro!! \n";
 	}
 }
 
@@ -541,7 +541,7 @@ void Player::openDoor(Room &ar, string dir)
 				}//there is door but you need to use a key to open it
 				else if (ar.getSouth()->getDoor() == 2 && ar.getSouth()->getDoorOpen() == false)
 				{
-					cout << "\n The door seems to need a key to be opened!.";
+					cout << "\n The door seems to need a key to be opened! \n";
 				}
 				
 			}
@@ -571,13 +571,13 @@ void Player::openDoor(Room &ar, string dir)
 				}//there is door but you need to use a key to open it
 				else if (ar.getEast()->getDoor() == 2 && ar.getEast()->getDoorOpen() == false)
 				{
-					cout << "\n The door seems to need a key to be opened!.";
+					cout << "\n The door seems to need a key to be opened! \n";
 				}
 			}
 		}
 		else
 		{
-			cout << "\nThere is no door to be open!\n";
+			cout << "\nThere is no door to be opened!\n";
 		}
 	}
 	else if (dir == "west")
@@ -600,7 +600,7 @@ void Player::openDoor(Room &ar, string dir)
 				}//there is door but you need to use a key to open it
 				else if (ar.getWest()->getDoor() == 2 && ar.getWest()->getDoorOpen() == false)
 				{
-					cout << "\n The door seems to need a key to be opened!.";
+					cout << "\n The door seems to need a key to be opened! \n";
 				}		
 			}
 		}
@@ -611,7 +611,7 @@ void Player::openDoor(Room &ar, string dir)
 	}
 	else
 	{
-		cout << "\nI don't recognise that direction!\n";
+		cout << "\nI don't recognise that direction bro!\n";
 	}
 
 }
@@ -698,7 +698,7 @@ void Player::closeDoor(Room &ar, string dir)
 	}
 	else
 	{
-		cout << "\nI don't recognise that direction!\n";
+		cout << "\nI don't recognise that direction bro!\n";
 	}
 }
 
@@ -710,6 +710,8 @@ void Player::attack(string n, string w)
 
 	int enemyLifeAux;
 	int powerAttackAux;
+
+	srand(time(NULL));
 
 	int flag = 0;
 
@@ -745,7 +747,7 @@ void Player::attack(string n, string w)
 
 
 				}
-				else if (w == "Knife")
+				else if (w == "knife")
 				{
 					vector <Object> objectsInventary = playerInventory->getObjectsIn();
 
@@ -768,11 +770,11 @@ void Player::attack(string n, string w)
 								if (randonDamage > 0)
 								{
 									enemyLifeAux -= randonDamage;
-									cout << "\n You've made " << randonDamage << " on " << it->getName() << "\n";
+									cout << "\n You've made " << randonDamage << " on the enemy\n";
 								}
 								else
 								{
-									cout << "\n You fail your attack! \n";
+									cout << "\n You've failed your attack! \n";
 								}
 						
 							}
@@ -780,7 +782,7 @@ void Player::attack(string n, string w)
 					}
 
 				}
-				else if (w == "Shootgun")
+				else if (w == "shootgun")
 				{
 					vector <Object> objectsInventary = playerInventory->getObjectsIn();
 
@@ -805,7 +807,7 @@ void Player::attack(string n, string w)
 								if (randonDamage > 0)
 								{
 									enemyLifeAux -= randonDamage;
-									cout << "\n You've made " << randonDamage << " on " << it->getName() << "\n";
+									cout << "\n You've made " << randonDamage << " on the enemy \n";
 								}
 								else
 								{
@@ -819,7 +821,7 @@ void Player::attack(string n, string w)
 
 				if (flag == 0)
 				{
-					cout << "I don't have any weapon like that one to attack!! \n";
+					cout << "\n I don't have any weapon like that one to attack bro!! \n";
 				}
 
 
@@ -839,7 +841,7 @@ void Player::attack(string n, string w)
 
 					if (dropAux.size() > 0)
 					{
-						cout << " \nSeems like the enemy dropped something! \n";
+						cout << " \n Seems like the enemy dropped something! \n";
 						vector <Object>::iterator itDrop = dropAux.begin();
 
 						for (itDrop; itDrop != dropAux.end(); itDrop++)
@@ -871,11 +873,11 @@ void Player::attack(string n, string w)
 
 						this->setLife(playerLifeAux);
 
-						cout << "\n" << it->getName() << " hits you with a damage of " << randonEnemyDamage << "\n";
+						cout << " " << it->getName() << " hits you with a damage of " << randonEnemyDamage << "\n";
 
 						if (this->getLife() <= 0)
 						{
-							cout << "\n YOU DIED! END OF THE GAME MOTHER/&/·&$ER!\n";
+							cout << "\n\n\n \t \t YOU DIED! END OF THE GAME MOTHER/&/·&$ER!\n";
 						}
 
 					}

@@ -114,15 +114,15 @@ void const Room::listObjectsInRoom()
 	if (objects.size() > 0)
 	{
 		vector <Object>::iterator it = objects.begin();
-		cout << "List of objects in this room: \n";
+		cout << "\nList of objects in this room: \n";
 
 		for (it; it != objects.end(); it++)
 		{
-			cout << "\n";
 			cout << "\t - ";
 			cout << it->getName();
 			cout << ": ";
 			cout << it->getDescription();
+			cout << "\n";
 		}
 	}
 }
@@ -153,15 +153,16 @@ void const Room::listEnemiesInRoom()
 	{
 		vector <Enemy>::iterator it = enemiesAux.begin();
 
-		cout << "Warning! Seems to be ememies in the room! \n";
+		cout << "\n Warning! Seems to be ememies in the room! \n";
 
 		for (it; it != enemiesAux.end(); it++)
 		{
-			cout << "\n";
+			
 			cout << "\t - ";
 			cout << it->getName();
 			cout << ": ";
 			cout << it->getDescription();
+			cout << "\n";
 		}
 
 	}

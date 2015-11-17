@@ -5,6 +5,7 @@
 #include <string>
 #include "Inventory.h"
 #include <random>
+#include <time.h>
 
 using namespace std;
 
