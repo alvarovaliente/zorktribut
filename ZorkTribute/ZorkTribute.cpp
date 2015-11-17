@@ -138,6 +138,7 @@ int main()
 	
 
 		if (order == "") { order = "incorrect"; }
+		
 			
 		istringstream iss(order);
 			while (iss >> item)
@@ -146,7 +147,7 @@ int main()
 			int nMovesAux = player->getMoves();
 			player->setMoves(++nMovesAux);
 		
-		
+		if (suborders.size() > 4) { suborders[0] = "incorrect"; }
 
 
 		//Go order
